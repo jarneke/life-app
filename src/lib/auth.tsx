@@ -15,7 +15,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    const offline = localStorage.getItem("lifeapp_offline_token");
+    const offline = localStorage.getItem("app_token");
     if (offline) {
       try {
         const decoded = jwt.verify(offline, JWT_SECRET) as JwtPayload;
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const body: { offlineToken?: string } = await res.json();
     if (body.offlineToken) {
-      localStorage.setItem("lifeapp_offline_token", body.offlineToken);
+      localStorage.setItem("app_token", body.offlineToken);
     }
 
     setAuthenticated(true);
