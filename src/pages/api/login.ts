@@ -16,7 +16,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     const payload = { sub: "owner" }; // minimal payload
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    const token = jwt.sign(payload, JWT_SECRET as jwt.Secret, { expiresIn: JWT_EXPIRES_IN } as jwt.SignOptions);
 
     // httpOnly cookie (server-validated session)
     res.setHeader("Set-Cookie", serialize("app_token", token, {
@@ -28,7 +28,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }));
 
     // offlineToken is returned to client so it can store in localStorage for offline use
-    const offlineToken = jwt.sign({ sub: "owner", offline: true }, JWT_SECRET, { expiresIn: OFFLINE_EXPIRES_IN });
+    const offlineToken = jwt.sign({ sub: "owner", offline: true }, JWT_SECRET as jwt.Secret, { expiresIn: OFFLINE_EXPIRES_IN } as jwt.SignOptions);
 
     res.status(200).json({ ok: true, offlineToken });
 }
