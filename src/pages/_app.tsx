@@ -1,10 +1,26 @@
-import type { AppProps } from "next/app";
-import { AuthProvider } from "../lib/auth";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { AuthProvider, useAuth } from "../lib/auth";
+
+function AuthWrapper({ children }: { children: React.ReactNode }) {
+  const { authenticated } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!authenticated) {
+      router.push("/login"); // or show a modal
+    }
+  }, [authenticated, router]);
+
+  return <>{children}</>;
+}
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
-      <Component {...pageProps} />
+      <AuthWrapper>
+        <Component {...pageProps} />
+      </AuthWrapper>
     </AuthProvider>
   );
 }

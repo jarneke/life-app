@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function middleware(req: NextRequest) {
+    console.log("Middleware hit:", req.nextUrl.pathname);
     const url = req.nextUrl.clone();
 
     // Allow static and auth paths
@@ -13,6 +14,9 @@ export async function middleware(req: NextRequest) {
     }
 
     const cookie = req.cookies.get("app_token")?.value;
+
+    console.log("Cookie found:", cookie);
+
     if (!cookie) {
         // if no server cookie then redirect to login
         url.pathname = "/login";
