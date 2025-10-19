@@ -1,19 +1,19 @@
-import type { NextConfig } from "next";
-// @ts-ignore
-import withPWA from "next-pwa";
-// @ts-ignore
-import runtimeCaching from "next-pwa/cache";
+import withPWA from 'next-pwa';
 
-const nextConfig: NextConfig = {
+const config = {
   reactStrictMode: true,
-  // other Next.js options
+  images: {
+    domains: [],
+  },
+  // Optional: if you use the new Next.js app router
+  experimental: {
+    appDir: true,
+  },
+  // next-pwa options are expected at the top-level of the config
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development',
 };
 
-export default withPWA({
-  ...nextConfig,
-  pwa: {
-    dest: "public",
-    runtimeCaching,
-    disable: process.env.NODE_ENV === "development",
-  },
-} as any);
+export default withPWA(config);
