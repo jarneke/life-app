@@ -1,0 +1,15 @@
+{
+    "short_name": "LifeApp",
+    "name": "All-in-One Personal App",
+    "icons": [
+        {
+            "src": "/icons/icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#1a1a1a"
+}
