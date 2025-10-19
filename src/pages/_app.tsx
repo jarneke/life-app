@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { AuthProvider, useAuth } from "../lib/auth";
+import type { AppProps } from "next/app";
 
 function AuthWrapper({ children }: { children: React.ReactNode }) {
   const { authenticated } = useAuth();
