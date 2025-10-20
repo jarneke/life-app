@@ -88,7 +88,7 @@ export default function LoginPage() {
         {code.map((digit, index) => (
           <input
             key={index}
-            type="text"
+            type="number"
             maxLength={1}
             defaultValue={digit}
             ref={(el) => {
