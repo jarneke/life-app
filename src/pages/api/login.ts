@@ -18,7 +18,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
         const token = jwt.sign({ username }, JWT_SECRET);
 
-        // HttpOnly cookie for security
         res.setHeader(
             "Set-Cookie",
             `token=${token}; HttpOnly; Path=/; Max-Age=${JWT_EXPIRES_IN}; SameSite=Strict`
