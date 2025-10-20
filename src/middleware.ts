@@ -1,0 +1,35 @@
+import { jwtVerify } from "jose";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+// Convert secret to Uint8Array for jose
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
+
+export async function middleware(req: NextRequest) {
+    const { pathname } = req.nextUrl;
+
+    if (
+        pathname.startsWith("/login") ||
+        pathname.startsWith("/_next") ||
+        pathname.startsWith("/api") ||
+        pathname.startsWith("/icons")
+    ) {
+        return NextResponse.next();
+    }
+
+    const token = req.cookies.get("token")?.value;
+
+    if (!token) {
+        console.log("No token found, redirecting to login");
+        return NextResponse.redirect(new URL("/login", req.url));
+    }
+
+    try {
+        const { payload } = await jwtVerify(token, JWT_SECRET);
+        console.log("Token verified:", payload);
+        return NextResponse.next();
+    } catch (err) {
+        console.log("Token verification failed:", err);
+        return NextResponse.redirect(new URL("/login", req.url));
+    }
+}

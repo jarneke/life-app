@@ -1,34 +1,116 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "../lib/auth";
 
-export default function Login() {
-  const { login } = useAuth();
-  const [password, setPassword] = useState("");
-  const [err, setErr] = useState("");
+export default function LoginPage() {
+  const username = "admin";
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const [error, setError] = useState("");
+  const inputRefs = Array.from({ length: 6 }, () =>
+    useRef<HTMLInputElement>(null)
+  );
   const router = useRouter();
 
-  async function submit(e: React.FormEvent) {
+  // Handle digit input
+  const handleChange = (value: string, index: number) => {
+    if (!/^\d?$/.test(value)) return; // only digits
+    const newCode = [...code];
+    newCode[index] = value;
+    setCode(newCode);
+
+    // Move focus to next input
+    if (value && index < inputRefs.length - 1) {
+      inputRefs[index + 1].current?.focus();
+    }
+
+    // Call login if full code entered
+    if (newCode.every((c) => c !== "")) {
+      handleLogin(newCode.join(""));
+    }
+  };
+
+  // Handle backspace
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    if (e.key === "Backspace" && code[index] === "" && index > 0) {
+      inputRefs[index - 1].current?.focus();
+    }
+  };
+
+  // Handle paste
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pasted = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6);
+    if (!pasted) return;
+
+    const newCode = pasted.split("").concat(Array(6).fill("")).slice(0, 6);
+    setCode(newCode);
+
+    newCode.forEach((digit, i) => {
+      if (inputRefs[i].current) inputRefs[i].current.value = digit;
+    });
+
+    // Focus last filled input
+    const lastFilled = Math.min(pasted.length, 5);
+    inputRefs[lastFilled].current?.focus();
+
+    if (newCode.every((c) => c !== "")) {
+      handleLogin(newCode.join(""));
+    }
+
     e.preventDefault();
-    const ok = await login(password);
-    if (ok) router.replace("/");
-    else setErr("Invalid password");
-  }
+  };
+
+  // Login function
+  const handleLogin = async (password: string) => {
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (res.ok) {
+        console.log(res.ok);
+
+        router.push("/");
+      } else {
+        setError("Login failed. Please try again.");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+    }
+  };
 
   return (
-    <div style={{ maxWidth: 360, margin: "40px auto" }}>
-      <h1>Login</h1>
-      <form onSubmit={submit}>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="password"
-        />
-        <button type="submit">Login</button>
-      </form>
-      {err && <div style={{ color: "red" }}>{err}</div>}
-      <p>Offline: after first successful login the app will work offline.</p>
+    <div
+      className="flex flex-col items-center justify-center min-h-screen gap-4"
+      style={{ backgroundColor: "#1e1e1e", color: "white" }}
+    >
+      <img
+        src="/icons/icon-512x512.png"
+        alt="Logo"
+        className="mb-8 w-24 h-24"
+      />
+      <h1 className="text-2xl font-bold">Enter 6-Digit Code</h1>
+      <div className="flex gap-2 mb-4 mt-5">
+        {code.map((digit, index) => (
+          <input
+            key={index}
+            type="text"
+            maxLength={1}
+            defaultValue={digit}
+            ref={inputRefs[index]}
+            className="text-2xl w-10 text-center bg-stone-800 p-2 border-b border-white focus:outline-none"
+            onChange={(e) => handleChange(e.target.value, index)}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            onPaste={handlePaste}
+          />
+        ))}
+      </div>
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }

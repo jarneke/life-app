@@ -1,13 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { serialize } from "cookie";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    res.setHeader("Set-Cookie", serialize("app_token", "", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 0,
-    }));
-    res.status(200).json({ ok: true });
+    res.setHeader(
+        "Set-Cookie",
+        "token=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict"
+    );
+    res.status(200).json({ success: true });
 }
