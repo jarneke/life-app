@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 export default function LoginPage() {
   const username = "admin";
   const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const router = useRouter();
@@ -56,6 +57,7 @@ export default function LoginPage() {
   };
 
   const handleLogin = async (password: string) => {
+    setLoading(true);
     try {
       const res = await fetch("/api/login", {
         method: "POST",
@@ -94,7 +96,11 @@ export default function LoginPage() {
             ref={(el) => {
               inputRefs.current[index] = el;
             }}
-            className="text-2xl w-10 text-center bg-stone-800 p-2 border-b border-white focus:outline-none"
+            className={`text-2xl w-10 text-center p-2 border-b focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+              loading
+                ? "bg-stone-900 border-stone-400 text-stone-400"
+                : "bg-stone-800 border-white"
+            }`}
             onChange={(e) => handleChange(e.target.value, index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
             onPaste={handlePaste}
