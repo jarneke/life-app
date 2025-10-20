@@ -5,9 +5,7 @@ export default function LoginPage() {
   const username = "admin";
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
-  const inputRefs = Array.from({ length: 6 }, () =>
-    useRef<HTMLInputElement>(null)
-  );
+  const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const router = useRouter();
 
   const handleChange = (value: string, index: number) => {
@@ -16,8 +14,8 @@ export default function LoginPage() {
     newCode[index] = value;
     setCode(newCode);
 
-    if (value && index < inputRefs.length - 1) {
-      inputRefs[index + 1].current?.focus();
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus();
     }
 
     if (newCode.every((c) => c !== "")) {
@@ -30,7 +28,7 @@ export default function LoginPage() {
     index: number
   ) => {
     if (e.key === "Backspace" && code[index] === "" && index > 0) {
-      inputRefs[index - 1].current?.focus();
+      inputRefs.current[index - 1]?.focus();
     }
   };
 
@@ -45,11 +43,10 @@ export default function LoginPage() {
     setCode(newCode);
 
     newCode.forEach((digit, i) => {
-      if (inputRefs[i].current) inputRefs[i].current.value = digit;
+      if (inputRefs.current[i]) inputRefs.current[i]!.value = digit;
     });
 
-    const lastFilled = Math.min(pasted.length, 5);
-    inputRefs[lastFilled].current?.focus();
+    inputRefs.current[Math.min(pasted.length, 5)]?.focus();
 
     if (newCode.every((c) => c !== "")) {
       handleLogin(newCode.join(""));
@@ -65,9 +62,8 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-      if (res.ok) {
-        console.log(res.ok);
 
+      if (res.ok) {
         router.push("/");
       } else {
         setError("Login failed. Please try again.");
@@ -95,7 +91,9 @@ export default function LoginPage() {
             type="text"
             maxLength={1}
             defaultValue={digit}
-            ref={inputRefs[index]}
+            ref={(el) => {
+              inputRefs.current[index] = el;
+            }}
             className="text-2xl w-10 text-center bg-stone-800 p-2 border-b border-white focus:outline-none"
             onChange={(e) => handleChange(e.target.value, index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
