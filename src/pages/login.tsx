@@ -10,25 +10,21 @@ export default function LoginPage() {
   );
   const router = useRouter();
 
-  // Handle digit input
   const handleChange = (value: string, index: number) => {
-    if (!/^\d?$/.test(value)) return; // only digits
+    if (!/^\d?$/.test(value)) return;
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
 
-    // Move focus to next input
     if (value && index < inputRefs.length - 1) {
       inputRefs[index + 1].current?.focus();
     }
 
-    // Call login if full code entered
     if (newCode.every((c) => c !== "")) {
       handleLogin(newCode.join(""));
     }
   };
 
-  // Handle backspace
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
     index: number
@@ -38,7 +34,6 @@ export default function LoginPage() {
     }
   };
 
-  // Handle paste
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     const pasted = e.clipboardData
       .getData("text")
@@ -53,7 +48,6 @@ export default function LoginPage() {
       if (inputRefs[i].current) inputRefs[i].current.value = digit;
     });
 
-    // Focus last filled input
     const lastFilled = Math.min(pasted.length, 5);
     inputRefs[lastFilled].current?.focus();
 
@@ -64,7 +58,6 @@ export default function LoginPage() {
     e.preventDefault();
   };
 
-  // Login function
   const handleLogin = async (password: string) => {
     try {
       const res = await fetch("/api/login", {
