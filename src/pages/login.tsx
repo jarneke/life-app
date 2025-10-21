@@ -69,45 +69,56 @@ export default function LoginPage() {
         router.push("/");
       } else {
         setError("Login failed. Please try again.");
+        setLoading(false);
       }
     } catch (err) {
       setError("Network error. Please try again.");
+      setLoading(false);
     }
   };
 
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen gap-4"
-      style={{ backgroundColor: "#1e1e1e", color: "white" }}
+      style={{
+        backgroundImage: "url('/backgrounds/bg_lock_pastel_warm.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-      <img
-        src="/icons/icon-512x512.png"
-        alt="Logo"
-        className="mb-8 w-24 h-24"
-      />
-      <h1 className="text-2xl font-bold">Enter 6-Digit Code</h1>
-      <div className="flex gap-2 mb-4 mt-5">
-        {code.map((digit, index) => (
-          <input
-            key={index}
-            type="number"
-            maxLength={1}
-            defaultValue={digit}
-            ref={(el) => {
-              inputRefs.current[index] = el;
-            }}
-            className={`text-2xl w-10 text-center p-2 border-b focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
-              loading
-                ? "bg-stone-900 border-stone-400 text-stone-400"
-                : "bg-stone-800 border-white"
-            }`}
-            onChange={(e) => handleChange(e.target.value, index)}
-            onKeyDown={(e) => handleKeyDown(e, index)}
-            onPaste={handlePaste}
-          />
-        ))}
+      <div className="bg-stone-950/60 backdrop-blur-md p-5 rounded-3xl gap-4 flex flex-col items-center">
+        <h1 className="text-2xl font-bold text-center text-stone-50/70">
+          Enter 6-Digit Code
+        </h1>
+        <div className="flex gap-2 mb-4 mt-5">
+          {code.map((digit, index) => (
+            <input
+              key={index}
+              type="number"
+              maxLength={1}
+              defaultValue={digit}
+              disabled={loading}
+              ref={(el) => {
+                inputRefs.current[index] = el;
+              }}
+              className={`text-2xl text-stone-50/70 w-10 text-center p-2 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none rounded-lg ${
+                loading
+                  ? "bg-stone-950/60 text-stone-400"
+                  : "bg-stone-950/50 focus:bg-stone-700/50"
+              }`}
+              onChange={(e) => handleChange(e.target.value, index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              onPaste={handlePaste}
+            />
+          ))}
+        </div>
+
+        {error && (
+          <p className="text-red-500/70 font-semibold bg-stone-950/50 rounded-lg p-2">
+            {error}
+          </p>
+        )}
       </div>
-      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
