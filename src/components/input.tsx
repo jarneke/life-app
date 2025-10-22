@@ -16,7 +16,7 @@ export const Input: React.FC<InputProps> = ({
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className={`${className} bg-stone-950/60 text-stone-50/70 p-2 rounded-lg focus:outline-none focus:bg-stone-950/20 w-full transition`}
+      className={`${className} bg-stone-950/40 text-stone-50/70 p-2 rounded-lg focus:outline-none focus:bg-stone-950/20 w-full transition`}
       placeholder={placeholder}
     />
   );

@@ -1,13 +1,15 @@
 import { Box } from "@/components/box";
 import { Button } from "@/components/button";
+import { ButtonBig } from "@/components/button-big";
 import { Input } from "@/components/input";
 import { Notification } from "@/components/notification";
 import { Text } from "@/components/text";
 import { Check, TestTubeDiagonal } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
 export default function Home() {
-  const [value, setValue] = React.useState<string>("");
+  const [value, setValue] = useState<string>("");
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const handleChange = (newValue: string) => {
     setValue(newValue);
@@ -20,7 +22,7 @@ export default function Home() {
 
   return (
     <div
-      className="h-screen w-screen flex flex-col items-center pt-20 p-5 md:p-10 lg:p-20 gap-8"
+      className="h-screen w-screen flex flex-col items-center pt-25 p-5 md:p-10 lg:p-20 gap-15"
       style={{
         backgroundImage: "url('/backgrounds/bg_lock_pastel_warm.png')",
         backgroundSize: "cover",
@@ -44,7 +46,7 @@ export default function Home() {
         />
       </Box>
       {/* Notification center */}
-      <Box className="m gap-2">
+      <Box className="gap-2">
         <Notification
           notification={{
             id: "1",
@@ -68,6 +70,15 @@ export default function Home() {
             importance: 3,
           }}
         />
+      </Box>
+      {/* Feature Nav */}
+      <Box className="grid grid-cols-3 gap-2">
+        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
+        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
+        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
+        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
+        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
+        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
       </Box>
     </div>
   );
