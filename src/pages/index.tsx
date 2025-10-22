@@ -39,7 +39,7 @@ export default function Home() {
           <Button icon={<Check />} onClick={handleQuickCaptureSubmit}></Button>
         </div>
         <Text
-          className="mt-3 text-stone-100/20"
+          className="mt-3 text-stone-100/40"
           content="Type anything — i'll know where it belongs"
         />
       </Box>
@@ -50,7 +50,6 @@ export default function Home() {
             id: "1",
             icon: <TestTubeDiagonal />,
             message: "Test notification message 1",
-            importance: "low",
           }}
         />
         <Notification
@@ -58,7 +57,7 @@ export default function Home() {
             id: "2",
             icon: <TestTubeDiagonal />,
             message: "Test notification message 2",
-            importance: "medium",
+            importance: 1,
           }}
         />
         <Notification
@@ -66,7 +65,7 @@ export default function Home() {
             id: "3",
             icon: <TestTubeDiagonal />,
             message: "Test notification message 3",
-            importance: "high",
+            importance: 3,
           }}
         />
       </Box>
