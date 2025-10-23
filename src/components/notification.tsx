@@ -1,15 +1,15 @@
 import { Text } from "@/components/text";
 import { useRouter } from "next/router";
 
-interface Notification {
+export interface NotificationElement {
   id: string;
   icon: React.ReactNode;
   message: string;
   importance?: number;
-  redirectUrl?: string;
+  redirectUrl: string;
 }
 interface NotificationProps {
-  notification: Notification;
+  notification: NotificationElement;
   className?: string;
 }
 

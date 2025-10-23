@@ -20,13 +20,11 @@ export async function middleware(req: NextRequest) {
     const token = req.cookies.get("token")?.value;
 
     if (!token) {
-        console.log("No token found, redirecting to login");
         return NextResponse.redirect(new URL("/login", req.url));
     }
 
     try {
         const { payload } = await jwtVerify(token, JWT_SECRET);
-        console.log("Token verified:", payload);
         return NextResponse.next();
     } catch (err) {
         console.log("Token verification failed:", err);

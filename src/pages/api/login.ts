@@ -9,12 +9,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") return res.status(405).end();
 
     const { username, password } = req.body;
-    console.log('pass: ', `${password}`);
-    console.log('ap p: ', `${APP_PASSWORD}`);
 
     if (password && `${password}`.trim() === `${APP_PASSWORD}`.trim()) {
-        console.log("secret when setting", JWT_SECRET);
-
 
         const token = jwt.sign({ username }, JWT_SECRET);
 

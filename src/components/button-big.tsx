@@ -15,7 +15,7 @@ export const ButtonBig: React.FC<buttonBigProps> = ({
 }) => {
   return (
     <button
-      className={`bg-stone-950/30 hover:bg-stone-950/20 active:bg-stone-950/40 px-4 py-2 rounded-lg flex flex-col items-center gap-2 text-stone-100/70 ${className}`}
+      className={`bg-stone-950/30 hover:bg-stone-950/20 active:bg-stone-950/40 px-5 py-5 rounded-lg flex flex-col items-center gap-2 text-stone-100/70 ${className}`}
       onClick={onClick}
     >
       {icon}

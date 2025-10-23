@@ -1,16 +1,56 @@
+import { Background } from "@/components/background";
 import { Box } from "@/components/box";
 import { Button } from "@/components/button";
 import { ButtonBig } from "@/components/button-big";
 import { Input } from "@/components/input";
-import { Notification } from "@/components/notification";
+import { Notification, NotificationElement } from "@/components/notification";
 import { Text } from "@/components/text";
-import { Check, TestTubeDiagonal } from "lucide-react";
-import React, { useState } from "react";
+import {
+  BanknoteArrowUp,
+  CalendarDays,
+  ChartNoAxesColumnIncreasing,
+  Check,
+  Euro,
+  Flame,
+  TestTubeDiagonal,
+  Timer,
+} from "lucide-react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 export default function Home() {
-  const [value, setValue] = useState<string>("");
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const router = useRouter();
 
+  const [value, setValue] = useState<string>("");
+  const [notifications, setNotifications] = useState<NotificationElement[]>([]);
+
+  // Get all notifications (dummy data for now)
+  useEffect(() => {
+    // Fetch notifications from an API or local storage
+    const fetchedNotifications: NotificationElement[] = [
+      {
+        id: "1",
+        icon: <TestTubeDiagonal />,
+        message: "Test notification message 1",
+        redirectUrl: "/notifications",
+      },
+      {
+        id: "2",
+        icon: <TestTubeDiagonal />,
+        message: "Test notification message 2",
+        importance: 1,
+        redirectUrl: "/notifications",
+      },
+      {
+        id: "3",
+        icon: <TestTubeDiagonal />,
+        message: "Test notification message 3",
+        importance: 2,
+        redirectUrl: "/notifications",
+      },
+    ];
+    setNotifications(fetchedNotifications);
+  }, []);
   const handleChange = (newValue: string) => {
     setValue(newValue);
   };
@@ -21,14 +61,7 @@ export default function Home() {
   };
 
   return (
-    <div
-      className="h-screen w-screen flex flex-col items-center pt-25 p-5 md:p-10 lg:p-20 gap-15"
-      style={{
-        backgroundImage: "url('/backgrounds/bg_lock_pastel_warm.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <Background>
       {/* Quick Capture Input */}
       <Box className="gap-2">
         <div className="self-stretch flex gap-3">
@@ -47,39 +80,62 @@ export default function Home() {
       </Box>
       {/* Notification center */}
       <Box className="gap-2">
-        <Notification
-          notification={{
-            id: "1",
-            icon: <TestTubeDiagonal />,
-            message: "Test notification message 1",
-          }}
-        />
-        <Notification
-          notification={{
-            id: "2",
-            icon: <TestTubeDiagonal />,
-            message: "Test notification message 2",
-            importance: 1,
-          }}
-        />
-        <Notification
-          notification={{
-            id: "3",
-            icon: <TestTubeDiagonal />,
-            message: "Test notification message 3",
-            importance: 3,
-          }}
-        />
+        {notifications.map((notification) => (
+          <Notification key={notification.id} notification={notification} />
+        ))}
       </Box>
       {/* Feature Nav */}
       <Box className="grid grid-cols-3 gap-2">
-        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
-        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
-        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
-        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
-        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
-        <ButtonBig icon={<TestTubeDiagonal />} text="Test" onClick={() => {}} />
+        <ButtonBig
+          icon={<CalendarDays />}
+          text="Day Planner"
+          onClick={() => {
+            router.push("/day-planner");
+          }}
+        />
+        <ButtonBig
+          icon={<Check />}
+          text="Task Tracker"
+          onClick={() => {
+            router.push("/task-tracker");
+          }}
+        />
+        <ButtonBig
+          icon={<Flame />}
+          text="Calorie Tracker"
+          onClick={() => {
+            router.push("/calorie-tracker");
+          }}
+        />
+        <ButtonBig
+          icon={<Euro />}
+          text="Expense Tracker"
+          onClick={() => {
+            router.push("/expense-tracker");
+          }}
+        />
+        <ButtonBig
+          icon={<ChartNoAxesColumnIncreasing />}
+          text="Budget Planner"
+          onClick={() => {
+            router.push("/budget-planner");
+          }}
+        />
+        <ButtonBig
+          icon={<BanknoteArrowUp />}
+          text="Savings Helper"
+          onClick={() => {
+            router.push("/savings-helper");
+          }}
+        />
+        <ButtonBig
+          icon={<Timer />}
+          text="Work Hours"
+          onClick={() => {
+            router.push("/work-hours");
+          }}
+        />
       </Box>
-    </div>
+    </Background>
   );
 }
