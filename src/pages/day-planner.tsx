@@ -3,13 +3,15 @@ import { Box } from "@/components/box";
 import { Button } from "@/components/button";
 import DateInput from "@/components/dateInput";
 import { DateThingy } from "@/components/dateThingy";
+import { time } from "console";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function DayPlanner() {
   const [days, setDays] = useState<Array<Date>>([]);
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [TimeIntervals, setTimeIntervals] = useState<Array<string>>([
+  const [selectedDate, setSelectedDate] = useState(() => new Date());
+  const [currentTime, setCurrentTime] = useState(() => new Date());
+  const TimeIntervals = [
     "00:00",
     "01:00",
     "02:00",
@@ -34,10 +36,11 @@ export default function DayPlanner() {
     "21:00",
     "22:00",
     "23:00",
-    "",
-  ]);
-  const [currentTime, setCurrentTime] = useState<Date>(new Date());
+    "--:--",
+  ];
   const [topPosition, setTopPosition] = useState<number>(0);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Update current time every 10 minutes
   useEffect(() => {
@@ -58,12 +61,8 @@ export default function DayPlanner() {
     endOfWeek.setDate(startOfWeek.getDate() + 6);
 
     const dates: Date[] = [];
-    for (
-      let date = new Date(startOfWeek);
-      date <= endOfWeek;
-      date.setDate(date.getDate() + 1)
-    ) {
-      dates.push(new Date(date));
+    for (let i = 0; i < 7; i++) {
+      dates.push(new Date(startOfWeek.getTime() + i * 86400000));
     }
 
     setDays(dates);
@@ -78,6 +77,19 @@ export default function DayPlanner() {
     const topPosition = (minutes / 60) * hourHeight + paddingOffset;
     setTopPosition(topPosition);
   }, [currentTime]);
+
+  // Scroll to current time on initial render
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    // delay to ensure DOM is ready
+    const timeout = setTimeout(() => {
+      scrollRef.current!.scrollTo({
+        top: topPosition - 100, // offset to center current time
+        behavior: "smooth",
+      });
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [topPosition]);
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
@@ -124,13 +136,16 @@ export default function DayPlanner() {
           ))}
         </div>
       </Box>
-      <Box className="overflow-scroll flex flex-col gap-10 p-5 relative">
+      <Box
+        ref={scrollRef}
+        className="overflow-scroll flex flex-col gap-10 p-5 relative"
+      >
         {TimeIntervals.map((time, index) => (
           <div
             key={index}
             className="flex flex-row items-center justify-start self-stretch gap-2"
           >
-            <div className="text-sm w-16 text-right pr-4 text-stone-50/70">
+            <div className="text-sm w-16 text-center pr-4 text-stone-50/70">
               {time}
             </div>
             <div className="flex-1 h-px bg-stone-50/20"></div>
@@ -141,7 +156,12 @@ export default function DayPlanner() {
           style={{ top: `${topPosition}px` }}
         >
           <div className="h-2 w-2 rounded-full bg-orange-300/50" />
-          <div className="h-1 w-full rounded-full bg-orange-300/50" />
+
+          <div className="flex flex-row justify-between w-full">
+            <div className="h-1 w-1/4 rounded-full bg-orange-300/50" />
+            <div className="h-1 w-1/4 rounded-full bg-orange-300/50" />
+            <div className="h-1 w-1/4 rounded-full bg-orange-300/50" />
+          </div>
         </div>
       </Box>
     </Background>
