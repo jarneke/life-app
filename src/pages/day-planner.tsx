@@ -41,6 +41,7 @@ export default function DayPlanner() {
   const [topPosition, setTopPosition] = useState<number>(0);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const hasscrolledRef = useRef<boolean>(false);
 
   // Update current time every 10 minutes
   useEffect(() => {
@@ -80,14 +81,23 @@ export default function DayPlanner() {
 
   // Scroll to current time on initial render
   useEffect(() => {
-    if (!scrollRef.current) return;
+    console.log(
+      !scrollRef.current,
+      hasscrolledRef.current || topPosition === 0
+    );
+
+    if (!scrollRef.current || hasscrolledRef.current || topPosition === 0)
+      return;
+    hasscrolledRef.current = true;
+    console.log("scroll");
+
     // delay to ensure DOM is ready
     const timeout = setTimeout(() => {
       scrollRef.current!.scrollTo({
-        top: topPosition - 100, // offset to center current time
+        top: topPosition - 250, // offset to center current time
         behavior: "smooth",
       });
-    }, 100);
+    }, 200);
     return () => clearTimeout(timeout);
   }, [topPosition]);
 
