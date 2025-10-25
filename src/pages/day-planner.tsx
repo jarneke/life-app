@@ -339,11 +339,11 @@ export default function DayPlanner() {
             className="absolute left-14 right-0 flex gap-2 items-center justify-center px-5"
             style={{ top: `${topPosition}px` }}
           >
-            <div className="h-2 w-2 rounded-full bg-orange-300/50" />
+            <div className="h-2 w-2 rounded-full bg-stone-800/50" />
             <div className="flex flex-row justify-between w-full">
-              <div className="h-1 w-1/4 rounded-full bg-orange-300/50" />
-              <div className="h-1 w-1/4 rounded-full bg-orange-300/50" />
-              <div className="h-1 w-1/4 rounded-full bg-orange-300/50" />
+              <div className="h-1 w-1/4 rounded-full bg-stone-800/50" />
+              <div className="h-1 w-1/4 rounded-full bg-stone-800/50" />
+              <div className="h-1 w-1/4 rounded-full bg-stone-800/50" />
             </div>
           </div>
         </Box>
