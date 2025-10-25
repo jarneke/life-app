@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Text } from "@/components/text";
 
-interface DateThingyProps {
+// DateThingy component — renders a single date button with styling based on selection and whether it is today
+export const DateThingy: React.FC<{
   date: Date;
   selected: boolean;
   onClick: () => void;
-}
-
-export const DateThingy: React.FC<DateThingyProps> = ({
-  date,
-  selected,
-  onClick,
-}) => {
+}> = ({ date, selected, onClick }) => {
   const today = new Date();
   const isToday =
     date.getDate() === today.getDate() &&
@@ -20,17 +15,18 @@ export const DateThingy: React.FC<DateThingyProps> = ({
 
   const [className, setClassName] = useState("");
 
+  // Adjust visual style depending on selection state and if it’s today
   useEffect(() => {
     if (selected && isToday) {
       setClassName(
-        "font-bold text-stone-100 bg-orange-300/50  p-2 transition rounded-full"
+        "!font-bold !text-stone-100 !bg-orange-300/50 !p-2 transition !rounded-full"
       );
     } else if (selected && !isToday) {
-      setClassName("font-bold text-stone-100 bg-none p-2 transition");
+      setClassName("!font-bold !text-stone-100 !bg-none !p-2 !transition");
     } else if (!selected && isToday) {
-      setClassName("font-normal text-orange-300 bg-none transition");
+      setClassName("!font-normal !text-orange-300 !bg-none !transition");
     } else {
-      setClassName("font-normal text-stone-100/80 transition");
+      setClassName("!font-normal !text-stone-100/80 !transition");
     }
   }, [selected, isToday]);
 
@@ -39,13 +35,13 @@ export const DateThingy: React.FC<DateThingyProps> = ({
       <Text
         className={
           selected
-            ? `font-bold text-stone-100 transition`
-            : `text-stone-100/80 transition`
+            ? "font-bold text-stone-100 transition"
+            : "text-stone-100/80 transition"
         }
         content={date.toLocaleDateString("en-US", { weekday: "short" })[0]}
       />
       <Text
-        className={`${className}`}
+        className={className}
         content={date.toLocaleDateString("en-US", { day: "numeric" })}
       />
     </button>

@@ -7,6 +7,7 @@ interface buttonBigProps {
   className?: string;
 }
 
+// Large button component with optional icon and text
 export const ButtonBig: React.FC<buttonBigProps> = ({
   icon,
   text,

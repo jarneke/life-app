@@ -18,15 +18,17 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
+// Home page — quick capture input, notification center, and feature navigation
 export default function Home() {
   const router = useRouter();
 
+  // ---------- STATE ----------
   const [value, setValue] = useState<string>("");
   const [notifications, setNotifications] = useState<NotificationElement[]>([]);
 
-  // Get all notifications (dummy data for now)
+  // ---------- EFFECTS ----------
+  // Fetch notifications (dummy data for now)
   useEffect(() => {
-    // Fetch notifications from an API or local storage
     const fetchedNotifications: NotificationElement[] = [
       {
         id: "1",
@@ -51,6 +53,8 @@ export default function Home() {
     ];
     setNotifications(fetchedNotifications);
   }, []);
+
+  // ---------- HANDLERS ----------
   const handleChange = (newValue: string) => {
     setValue(newValue);
   };
@@ -60,6 +64,7 @@ export default function Home() {
     console.log("Quick capture submitted:", value);
   };
 
+  // ---------- RENDER ----------
   return (
     <Background>
       {/* Quick Capture Input */}
@@ -78,62 +83,50 @@ export default function Home() {
           content="Type anything — i'll know where it belongs"
         />
       </Box>
+
       {/* Notification center */}
       <Box className="gap-2">
         {notifications.map((notification) => (
           <Notification key={notification.id} notification={notification} />
         ))}
       </Box>
-      {/* Feature Nav */}
+
+      {/* Feature Navigation */}
       <Box className="grid grid-cols-3 gap-2">
         <ButtonBig
           icon={<CalendarDays />}
           text="Day Planner"
-          onClick={() => {
-            router.push("/day-planner");
-          }}
+          onClick={() => router.push("/day-planner")}
         />
         <ButtonBig
           icon={<Check />}
           text="Task Tracker"
-          onClick={() => {
-            router.push("/task-tracker");
-          }}
+          onClick={() => router.push("/task-tracker")}
         />
         <ButtonBig
           icon={<Flame />}
           text="Calorie Tracker"
-          onClick={() => {
-            router.push("/calorie-tracker");
-          }}
+          onClick={() => router.push("/calorie-tracker")}
         />
         <ButtonBig
           icon={<Euro />}
           text="Expense Tracker"
-          onClick={() => {
-            router.push("/expense-tracker");
-          }}
+          onClick={() => router.push("/expense-tracker")}
         />
         <ButtonBig
           icon={<ChartNoAxesColumnIncreasing />}
           text="Budget Planner"
-          onClick={() => {
-            router.push("/budget-planner");
-          }}
+          onClick={() => router.push("/budget-planner")}
         />
         <ButtonBig
           icon={<BanknoteArrowUp />}
           text="Savings Helper"
-          onClick={() => {
-            router.push("/savings-helper");
-          }}
+          onClick={() => router.push("/savings-helper")}
         />
         <ButtonBig
           icon={<Timer />}
           text="Work Hours"
-          onClick={() => {
-            router.push("/work-hours");
-          }}
+          onClick={() => router.push("/work-hours")}
         />
       </Box>
     </Background>

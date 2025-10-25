@@ -4,6 +4,7 @@ import { Text } from "@/components/text";
 import { Home, SearchX } from "lucide-react";
 import { useRouter } from "next/router";
 
+// Custom 404 page — displays an error message with navigation back to home
 export default function Custom404() {
   const router = useRouter();
 

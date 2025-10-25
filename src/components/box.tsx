@@ -4,6 +4,8 @@ interface BoxProps {
   ref?: React.Ref<HTMLDivElement>;
   style?: React.CSSProperties;
 }
+
+// Reusable container with blurred translucent background
 export const Box: React.FC<BoxProps> = ({
   children,
   className = "",

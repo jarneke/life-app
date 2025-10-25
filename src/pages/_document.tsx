@@ -1,5 +1,6 @@
 import { Html, Head, Main, NextScript } from "next/document";
 
+// Custom Document — sets HTML structure, meta tags, and PWA configuration
 export default function Document() {
   return (
     <Html lang="en">

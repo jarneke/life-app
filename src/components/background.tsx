@@ -8,6 +8,7 @@ interface backgroundProps {
   Home?: boolean;
 }
 
+// Full-screen layout wrapper with optional home button
 export const Background: React.FC<backgroundProps> = ({
   children,
   className,

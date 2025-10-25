@@ -13,6 +13,7 @@ interface NotificationProps {
   className?: string;
 }
 
+// Notification component — clickable item that optionally redirects and displays importance
 export const Notification: React.FC<NotificationProps> = ({
   notification,
   className = "",
@@ -21,7 +22,7 @@ export const Notification: React.FC<NotificationProps> = ({
 
   const handleClick = () => {
     if (notification.redirectUrl) {
-      router.push(notification.redirectUrl);
+      router.push(notification.redirectUrl); // Navigate if redirect URL exists
     }
   };
 
@@ -35,7 +36,7 @@ export const Notification: React.FC<NotificationProps> = ({
       {notification.importance && (
         <Text
           className="text-stone-100/40"
-          content={"!".repeat(notification.importance)}
+          content={"!".repeat(notification.importance)} // Show visual importance
         />
       )}
     </button>

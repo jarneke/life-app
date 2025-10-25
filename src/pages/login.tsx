@@ -1,14 +1,20 @@
 import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
 
+// Login page — 6-digit code input with paste support, validation, and login API call
 export default function LoginPage() {
   const username = "admin";
+
+  // ---------- STATE ----------
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // ---------- REFS ----------
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const router = useRouter();
 
+  // ---------- HANDLERS ----------
   const handleChange = (value: string, index: number) => {
     if (!/^\d?$/.test(value)) return;
     const newCode = [...code];
@@ -77,6 +83,7 @@ export default function LoginPage() {
     }
   };
 
+  // ---------- RENDER ----------
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen gap-4"
